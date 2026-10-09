@@ -12,7 +12,7 @@ export default function Profile() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="lg:col-span-5 flex justify-center relative group min-h-[320px]"
+          className="hidden lg:flex lg:col-span-5 justify-center relative group min-h-[320px]"
         >
           <motion.div 
             animate={{ 
