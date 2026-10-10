@@ -34,10 +34,10 @@ export default function Typewriter({ words, delay = 2000 }) {
 
   return (
     <span className="relative">
-      <span className="text-cyan-400 font-bold font-mono">
+      <span className="text-violet-400 font-bold font-mono">
         {words[index].substring(0, subIndex)}
       </span>
-      <span className={`w-[3px] h-[1.1em] bg-cyan-400 ml-1 inline-block align-middle transition-opacity duration-100 ${blink ? 'opacity-100' : 'opacity-0'}`} />
+      <span className={`w-[3px] h-[1.1em] bg-violet-400 ml-1 inline-block align-middle transition-opacity duration-100 ${blink ? 'opacity-100' : 'opacity-0'}`} />
     </span>
   );
 }
