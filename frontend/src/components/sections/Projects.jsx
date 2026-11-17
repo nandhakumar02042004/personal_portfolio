@@ -1,18 +1,19 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Compass, ExternalLink, ChevronLeft, ChevronRight, X } from 'lucide-react';
-import { GithubIcon } from '../ui/Icons';
-import { quests } from '../../constants/projects';
+import { ExternalLink, ArrowRight, ChevronLeft, ChevronRight, X, Eye } from 'lucide-react';
+import { featuredProjects } from '../../data/projects';
 
-function ProjectImageCarousel({ images, title, onImageClick, direction = 'ltr', zoom = false }) {
+function ProjectImageCarousel({ images, title, onImageClick }) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
+    if (isHovered || images.length <= 1) return;
     const timer = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 3000);
+      setCurrentIndex((prev) => (prev + 1) % images.length);
+    }, 3200);
     return () => clearInterval(timer);
-  }, [images.length]);
+  }, [images.length, isHovered]);
 
   const handlePrev = (e) => {
     e.stopPropagation();
@@ -25,301 +26,328 @@ function ProjectImageCarousel({ images, title, onImageClick, direction = 'ltr', 
   };
 
   return (
-    <div className="w-full aspect-[2.22] rounded-xl overflow-hidden border border-purple-900/40 mb-4 relative group/img cursor-pointer">
+    <div 
+      className="w-full aspect-[16/10] overflow-hidden bg-[#07111F] relative group/carousel cursor-pointer select-none"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={() => onImageClick(currentIndex)}
+    >
+      {/* Sliding Strip */}
       <div 
-        className="w-full h-full flex transition-transform duration-500 ease-in-out"
-        style={{ 
-          transform: `translateX(-${currentIndex * 100}%)`
-        }}
+        className="w-full h-full flex transition-transform duration-600 ease-in-out"
+        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
       >
         {images.map((src, idx) => (
-          <div key={idx} className="w-full h-full shrink-0 overflow-hidden relative">
-            <img 
-              src={src} 
-              alt={`${title} Screenshot ${idx + 1}`} 
-              className={`w-full h-full object-cover cursor-zoom-in transition-transform duration-500 ${
-                zoom 
-                  ? 'scale-[1.22] origin-bottom hover:scale-[1.25]' 
-                  : 'hover:scale-105'
-              }`} 
-              onClick={() => onImageClick(images, idx, title)}
+          <div key={idx} className="w-full h-full shrink-0 relative overflow-hidden bg-[#07111F]">
+            <img
+              src={src}
+              alt={`${title} Screenshot ${idx + 1}`}
+              className="w-full h-full object-cover object-top transition-transform duration-700 hover:scale-105"
             />
           </div>
         ))}
       </div>
 
-      {/* Manual Left/Right Arrows on Card Hover */}
-      <button 
-        onClick={handlePrev}
-        aria-label="Previous image"
-        className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-black/70 hover:bg-violet-600 text-white flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-all z-20 hover:scale-110 shadow-md border border-purple-900/40"
-      >
-        <ChevronLeft className="w-4 h-4" />
-      </button>
+      {/* Subtle bottom gradient for card transition */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#0D1B2D]/90 via-transparent to-black/20 pointer-events-none" />
 
-      <button 
-        onClick={handleNext}
-        aria-label="Next image"
-        className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-black/70 hover:bg-violet-600 text-white flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-all z-20 hover:scale-110 shadow-md border border-purple-900/40"
-      >
-        <ChevronRight className="w-4 h-4" />
-      </button>
-      
-      {/* Dot Indicators */}
-      <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 flex gap-1.5 z-20">
-        {images.map((_, idx) => (
-          <button 
-            key={idx}
-            onClick={(e) => {
-              e.stopPropagation();
-              setCurrentIndex(idx);
-            }}
-            className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${currentIndex === idx ? 'bg-violet-400 w-3.5' : 'bg-white/45 hover:bg-white/70'}`}
-          />
-        ))}
+      {/* Manual Slide Arrows (Visible on card hover) */}
+      {images.length > 1 && (
+        <>
+          <button
+            onClick={handlePrev}
+            aria-label="Previous Screenshot"
+            className="absolute left-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/75 hover:bg-[#FF9D00] hover:text-black text-white flex items-center justify-center opacity-0 group-hover/carousel:opacity-100 transition-all duration-200 z-20 border border-white/20 shadow-lg active:scale-90"
+          >
+            <ChevronLeft size={18} strokeWidth={2.5} />
+          </button>
+
+          <button
+            onClick={handleNext}
+            aria-label="Next Screenshot"
+            className="absolute right-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/75 hover:bg-[#FF9D00] hover:text-black text-white flex items-center justify-center opacity-0 group-hover/carousel:opacity-100 transition-all duration-200 z-20 border border-white/20 shadow-lg active:scale-90"
+          >
+            <ChevronRight size={18} strokeWidth={2.5} />
+          </button>
+        </>
+      )}
+
+      {/* Carousel Dot Indicators */}
+      {images.length > 1 && (
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-20 bg-black/60 backdrop-blur-sm px-2.5 py-1 rounded-full border border-white/10">
+          {images.map((_, dotIdx) => (
+            <button
+              key={dotIdx}
+              onClick={(e) => {
+                e.stopPropagation();
+                setCurrentIndex(dotIdx);
+              }}
+              aria-label={`Go to slide ${dotIdx + 1}`}
+              className={`rounded-full transition-all duration-300 ${
+                currentIndex === dotIdx
+                  ? 'bg-[#FF9D00] w-4 h-1.5 shadow-[0_0_8px_rgba(255,157,0,0.8)]'
+                  : 'bg-white/40 hover:bg-white/70 w-1.5 h-1.5'
+              }`}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Click to Zoom Pill Indicator */}
+      <div className="absolute top-3 right-3 opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-200 z-20 pointer-events-none">
+        <span className="flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-semibold text-white bg-black/70 backdrop-blur-md border border-white/20 shadow-md">
+          <Eye size={12} className="text-[#FF9D00]" />
+          <span>Zoom</span>
+        </span>
       </div>
-      
-      <div className="absolute inset-0 bg-gradient-to-t from-[#130b24]/50 via-transparent to-transparent opacity-60 pointer-events-none" />
     </div>
   );
 }
 
-export default function Projects() {
+export default function Projects({ darkMode = true }) {
   const [modalState, setModalState] = useState(null); // { images: [], index: 0, title: '' }
 
-  const handleOpenModal = (images, index, title) => {
-    setModalState({ images, index, title });
+  const handleOpenGallery = (project, idx = 0) => {
+    const images = project.images && project.images.length > 0 ? project.images : [project.image];
+    setModalState({ images, index: idx, title: project.title, liveUrl: project.liveUrl, tags: project.tags });
   };
 
-  const handleCloseModal = () => {
-    setModalState(null);
-  };
-
-  const handlePrevImage = useCallback(() => {
+  const handlePrevImage = (e) => {
+    e?.stopPropagation();
     if (!modalState) return;
     setModalState((prev) => ({
       ...prev,
       index: (prev.index - 1 + prev.images.length) % prev.images.length
     }));
-  }, [modalState]);
+  };
 
-  const handleNextImage = useCallback(() => {
+  const handleNextImage = (e) => {
+    e?.stopPropagation();
     if (!modalState) return;
     setModalState((prev) => ({
       ...prev,
       index: (prev.index + 1) % prev.images.length
     }));
-  }, [modalState]);
-
-  // Keyboard Navigation (Left/Right Arrows, Escape)
-  useEffect(() => {
-    if (!modalState) return;
-
-    const handleKeyDown = (e) => {
-      if (e.key === 'ArrowLeft') {
-        handlePrevImage();
-      } else if (e.key === 'ArrowRight') {
-        handleNextImage();
-      } else if (e.key === 'Escape') {
-        handleCloseModal();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [modalState, handlePrevImage, handleNextImage]);
+  };
 
   return (
-    <section id="quests" className="max-w-7xl mx-auto px-6 py-12 sm:py-16 border-t border-purple-900/25 scroll-mt-20">
-      <motion.div 
-        initial={{ opacity: 0, y: 25 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="mb-12 text-center sm:text-left flex flex-col items-center sm:items-start"
-      >
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-500/10 text-violet-400 text-xs font-semibold uppercase tracking-wider font-mono mb-4">
-          <Compass className="w-3.5 h-3.5" />
-          PROJECTS GRID
-        </div>
-        <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3">Featured Projects</h2>
-        <p className="text-slate-400">Browse completed web architectures and tech stacks.</p>
-      </motion.div>
+    <section id="projects" className="py-12 sm:py-16 scroll-mt-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Section Header following unified pattern */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10 text-left">
+          <div>
+            <div className="flex items-center gap-2 text-[#FF9D00] text-xs sm:text-sm font-mono font-bold tracking-[0.3em] uppercase mb-1.5">
+              <span>≡ EPISODE 03</span>
+              <span className="text-slate-600">•</span>
+              <span>PRODUCTION BUILDS</span>
+            </div>
+            <h2 className="font-netflix text-4xl sm:text-5xl md:text-6xl uppercase tracking-wider text-white">
+              FEATURED{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFC928] via-[#FF9D00] to-[#E58500]">
+                PROJECTS
+              </span>
+            </h2>
+          </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto items-stretch justify-center">
-        {quests.map((quest, index) => (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-            whileHover={{ y: -6 }}
-            className="bg-[#130b24]/75 border border-purple-900/30 hover:border-violet-500/50 rounded-2xl p-5 flex flex-col justify-between transition-all duration-300 relative overflow-hidden group shadow-lg shadow-purple-950/30 backdrop-blur-sm"
-            key={index}
+          <a
+            href="https://github.com"
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center gap-2 text-xs sm:text-sm font-mono font-bold uppercase tracking-wider text-[#FF9D00] hover:text-[#FFC928] group transition-colors cursor-pointer w-fit pb-1"
           >
-            <div>
-              {/* Project Image Thumbnail or Slider */}
-              {quest.images && quest.images.length > 0 ? (
-                <ProjectImageCarousel 
-                  images={quest.images} 
-                  title={quest.title} 
-                  onImageClick={handleOpenModal}
-                  direction={index % 2 === 0 ? 'ltr' : 'rtl'}
-                  zoom={quest.zoom}
+            <span>View All Projects</span>
+            <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform stroke-[2.5]" />
+          </a>
+        </div>
+
+        {/* 3 Featured Projects Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
+          {featuredProjects.map((project, idx) => {
+            const projectImages = project.images && project.images.length > 0 ? project.images : [project.image];
+
+            return (
+              <motion.div
+                key={project.id}
+                initial={{ opacity: 0, y: 25 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                whileHover={{ y: -6 }}
+                className={`rounded-3xl border overflow-hidden flex flex-col transition-all duration-300 group ${
+                  darkMode
+                    ? 'bg-[#0D1B2D] border-[#1D334B] hover:border-[#FF9D00]/60 shadow-xl shadow-black/50 hover:shadow-[0_12px_35px_rgba(255,157,0,0.18)]'
+                    : 'bg-white border-slate-200 hover:border-[#FF9D00]/60 shadow-sm hover:shadow-xl'
+                }`}
+              >
+                {/* Auto-sliding Project Screenshot Carousel */}
+                <ProjectImageCarousel
+                  images={projectImages}
+                  title={project.title}
+                  onImageClick={(slideIdx) => handleOpenGallery(project, slideIdx)}
                 />
-              ) : (
-                <div 
-                  className="w-full aspect-[2.22] rounded-xl overflow-hidden border border-purple-900/40 mb-4 relative group/img cursor-zoom-in" 
-                  onClick={() => handleOpenModal([quest.image], 0, quest.title)}
-                >
-                  <img 
-                    src={quest.image} 
-                    alt={quest.title} 
-                    className={`w-full h-full object-cover transition-transform duration-500 ${
-                      quest.zoom ? 'scale-[1.22] origin-bottom group-hover/img:scale-[1.25]' : 'group-hover/img:scale-105'
-                    }`} 
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#130b24]/50 via-transparent to-transparent opacity-60 pointer-events-none" />
+
+                {/* Card Body */}
+                <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between">
+                  <div>
+                    {/* Title & Live External Link */}
+                    <div className="flex items-start justify-between gap-2 mb-2.5">
+                      <h3 
+                        onClick={() => handleOpenGallery(project, 0)}
+                        className={`text-lg sm:text-xl font-bold tracking-tight group-hover:text-[#FF9D00] transition-colors cursor-pointer leading-snug ${
+                          darkMode ? 'text-white' : 'text-slate-900'
+                        }`}
+                      >
+                        {project.title}
+                      </h3>
+
+                      {project.liveUrl && (
+                        <a
+                          href={project.liveUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          aria-label={`Visit ${project.title}`}
+                          className="text-slate-400 hover:text-[#FF9D00] hover:bg-white/5 p-1.5 rounded-lg transition-all shrink-0"
+                        >
+                          <ExternalLink size={18} className="stroke-[2.2]" />
+                        </a>
+                      )}
+                    </div>
+
+                    {/* Project Description */}
+                    <p className={`text-xs sm:text-[13px] leading-relaxed mb-5 ${
+                      darkMode ? 'text-[#A7B2C5]' : 'text-slate-600'
+                    }`}>
+                      {project.description}
+                    </p>
+                  </div>
+
+                  {/* Technology Badges */}
+                  <div className="flex flex-wrap gap-2 pt-3 border-t border-[#1D334B]/60">
+                    {project.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className={`text-[11px] font-medium px-3 py-1 rounded-full border ${
+                          darkMode
+                            ? 'bg-[#07111F] border-[#1D334B] text-slate-300'
+                            : 'bg-slate-100 border-slate-200 text-slate-700'
+                        }`}
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              )}
+              </motion.div>
+            );
+          })}
+        </div>
 
-              <h3 className="text-lg font-bold text-white mb-2 group-hover:text-violet-400 transition-colors font-mono uppercase tracking-tight">
-                {quest.title}
-              </h3>
-              <p className="text-slate-400 text-xs leading-relaxed mb-4">
-                {quest.desc}
-              </p>
-            </div>
-
-            <div>
-              <div className="flex flex-wrap gap-1.5 mb-4">
-                {quest.tags.map((tag, tIdx) => (
-                  <span 
-                    key={tIdx}
-                    className="text-[9px] font-semibold text-slate-300 px-2 py-0.5 rounded-lg bg-[#0c0717] border border-purple-900/35 font-mono"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-              
-              {/* Buttons directly visible inside the card */}
-              <div className="flex gap-3 pt-3 border-t border-purple-900/30">
-                <a 
-                  href={quest.liveLink}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-gradient-to-r from-violet-600 via-purple-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white font-bold rounded-xl text-xs active:scale-[0.98] transition-all shadow-md shadow-purple-900/30"
-                >
-                  <ExternalLink className="w-3.5 h-3.5" />
-                  <span>Visit</span>
-                </a>
-                {quest.githubLink && (
-                  <a 
-                    href={quest.githubLink}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex-1 flex items-center justify-center gap-1.5 py-2.5 border border-purple-800/80 hover:border-violet-400 text-white font-bold rounded-xl text-xs active:scale-[0.98] transition-all"
-                  >
-                    <GithubIcon className="w-3.5 h-3.5" />
-                    <span>GitHub</span>
-                  </a>
-                )}
-              </div>
-            </div>
-          </motion.div>
-        ))}
       </div>
 
-      {/* Full-screen Image Slideshow Popup Modal */}
+      {/* Full Gallery Preview Modal */}
       <AnimatePresence>
         {modalState && (
           <div 
-            className="fixed inset-0 bg-[#090514]/95 z-50 flex items-center justify-center p-3 sm:p-6 backdrop-blur-md cursor-pointer select-none"
-            onClick={handleCloseModal}
+            onClick={() => setModalState(null)}
+            className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 sm:p-6"
           >
             <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="relative max-w-6xl w-full max-h-[92vh] overflow-hidden rounded-3xl border border-purple-900/50 bg-[#130b24]/95 p-3 sm:p-4 shadow-2xl shadow-purple-950/90 flex flex-col items-center justify-between"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
               onClick={(e) => e.stopPropagation()}
+              className="max-w-4xl w-full rounded-3xl bg-[#0D1B2D] border border-[#1D334B] p-5 sm:p-7 shadow-2xl relative text-left"
             >
-              {/* Header Bar */}
-              <div className="w-full flex items-center justify-between px-3 py-2 border-b border-purple-900/30 mb-2">
-                <div className="flex items-center gap-3">
-                  <h4 className="text-sm sm:text-base font-bold text-white font-mono uppercase tracking-wide">
-                    {modalState.title}
-                  </h4>
-                </div>
+              {/* Close Button */}
+              <button
+                onClick={() => setModalState(null)}
+                aria-label="Close Preview"
+                className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer z-20"
+              >
+                <X size={18} />
+              </button>
 
-                <button 
-                  onClick={handleCloseModal}
-                  className="flex items-center gap-1.5 text-slate-400 hover:text-white font-mono font-bold text-xs bg-black/60 hover:bg-violet-600 px-3 py-1.5 rounded-xl border border-purple-900/50 transition-all cursor-pointer"
-                >
-                  <X className="w-3.5 h-3.5" />
-                  <span>CLOSE</span>
-                </button>
-              </div>
-
-              {/* Main Image Viewport with Left/Right Click Buttons */}
-              <div className="relative w-full flex-1 flex items-center justify-center min-h-[320px] max-h-[72vh] overflow-hidden my-auto rounded-2xl bg-black/40">
-                
-                {/* Left Slide Button */}
-                {modalState.images.length > 1 && (
-                  <button 
-                    onClick={handlePrevImage}
-                    aria-label="Previous Slide"
-                    className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-black/70 hover:bg-violet-600 text-white flex items-center justify-center border border-purple-900/60 hover:border-violet-400 transition-all z-30 cursor-pointer shadow-xl backdrop-blur-sm hover:scale-110 active:scale-95"
-                  >
-                    <ChevronLeft className="w-6 h-6" />
-                  </button>
-                )}
-
-                {/* The Image */}
-                <AnimatePresence mode="wait">
-                  <motion.img 
-                    key={modalState.index}
-                    src={modalState.images[modalState.index]} 
-                    alt={`${modalState.title} - Slide ${modalState.index + 1}`} 
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ duration: 0.25 }}
-                    className="w-full max-h-[72vh] object-contain rounded-xl select-none" 
-                  />
-                </AnimatePresence>
-
-                {/* Right Slide Button */}
-                {modalState.images.length > 1 && (
-                  <button 
-                    onClick={handleNextImage}
-                    aria-label="Next Slide"
-                    className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-black/70 hover:bg-violet-600 text-white flex items-center justify-center border border-purple-900/60 hover:border-violet-400 transition-all z-30 cursor-pointer shadow-xl backdrop-blur-sm hover:scale-110 active:scale-95"
-                  >
-                    <ChevronRight className="w-6 h-6" />
-                  </button>
-                )}
-              </div>
-
-              {/* Bottom Thumbnail Strip / Dots */}
-              {modalState.images.length > 1 && (
-                <div className="w-full flex items-center justify-center gap-2 pt-3 pb-1 border-t border-purple-900/30 mt-2">
-                  {modalState.images.map((_, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setModalState(prev => ({ ...prev, index: idx }))}
-                      className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                        modalState.index === idx 
-                          ? 'w-8 bg-violet-400 shadow-md shadow-violet-500/50' 
-                          : 'w-2 bg-slate-700 hover:bg-slate-500'
-                      }`}
-                      aria-label={`Jump to slide ${idx + 1}`}
-                    />
+              {/* Modal Header */}
+              <div className="mb-4 pr-10">
+                <h3 className="text-xl sm:text-2xl font-bold text-white">{modalState.title}</h3>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {modalState.tags?.map((t) => (
+                    <span key={t} className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-[#07111F] text-slate-300 border border-[#1D334B]">
+                      {t}
+                    </span>
                   ))}
                 </div>
-              )}
+              </div>
+
+              {/* Main Image Slider Viewport */}
+              <div className="relative rounded-2xl overflow-hidden border border-[#1D334B] bg-[#07111F] aspect-[16/10] max-h-[65vh] flex items-center justify-center mb-4">
+                <img
+                  src={modalState.images[modalState.index]}
+                  alt={`${modalState.title} Screenshot ${modalState.index + 1}`}
+                  className="w-full h-full object-contain select-none"
+                />
+
+                {/* Left Arrow */}
+                {modalState.images.length > 1 && (
+                  <button
+                    onClick={handlePrevImage}
+                    aria-label="Previous screenshot"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/80 hover:bg-[#FF9D00] hover:text-black text-white flex items-center justify-center transition-all z-20 cursor-pointer border border-white/20 shadow-lg"
+                  >
+                    <ChevronLeft size={20} />
+                  </button>
+                )}
+
+                {/* Right Arrow */}
+                {modalState.images.length > 1 && (
+                  <button
+                    onClick={handleNextImage}
+                    aria-label="Next screenshot"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/80 hover:bg-[#FF9D00] hover:text-black text-white flex items-center justify-center transition-all z-20 cursor-pointer border border-white/20 shadow-lg"
+                  >
+                    <ChevronRight size={20} />
+                  </button>
+                )}
+
+                {/* Image Counter Badge */}
+                {modalState.images.length > 1 && (
+                  <div className="absolute bottom-3 right-3 px-3 py-1 rounded-full bg-black/75 backdrop-blur-sm text-xs font-mono text-white border border-white/20">
+                    {modalState.index + 1} / {modalState.images.length}
+                  </div>
+                )}
+              </div>
+
+              {/* Modal Footer: Thumbnails Row & Visit Live Site Button */}
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                {modalState.images.length > 1 ? (
+                  <div className="flex gap-2 overflow-x-auto max-w-full pb-1">
+                    {modalState.images.map((img, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setModalState((prev) => ({ ...prev, index: i }))}
+                        className={`w-14 h-9 sm:w-16 sm:h-10 rounded-lg overflow-hidden border-2 transition-all shrink-0 cursor-pointer ${
+                          modalState.index === i ? 'border-[#FF9D00] scale-105' : 'border-transparent opacity-50 hover:opacity-100'
+                        }`}
+                      >
+                        <img src={img} alt="Thumbnail" className="w-full h-full object-cover" />
+                      </button>
+                    ))}
+                  </div>
+                ) : <div />}
+
+                {modalState.liveUrl && (
+                  <a
+                    href={modalState.liveUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold text-black bg-gradient-to-r from-[#FF9D00] to-[#FFC928] hover:shadow-[0_0_20px_rgba(255,157,0,0.4)] active:scale-95 transition-all shadow-md shrink-0 cursor-pointer"
+                  >
+                    <span>Visit Live Website</span>
+                    <ExternalLink size={15} />
+                  </a>
+                )}
+              </div>
             </motion.div>
           </div>
         )}

@@ -1,128 +1,143 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Layers } from 'lucide-react';
-import { categorizedSkills } from '../../constants/skills';
-import * as Icons from '../ui/Icons';
+import { TechIcon } from '../ui/TechIcons';
+import { skillCategories, skillsList } from '../../data/skills';
 
-export default function Skills() {
-  const [selectedTech, setSelectedTech] = useState(null);
+export default function Skills({ darkMode }) {
+  const [activeCategory, setActiveCategory] = useState('All');
+  const [hoveredSkill, setHoveredSkill] = useState(null);
 
-  const renderIcon = (iconName, className = "w-7 h-7") => {
-    const IconComponent = Icons[iconName];
-    return IconComponent ? <IconComponent className={className} /> : null;
-  };
+  const categories = ['All', ...skillCategories];
+
+  const filteredSkills = activeCategory === 'All'
+    ? skillsList
+    : skillsList.filter((s) => s.category.toLowerCase() === activeCategory.toLowerCase());
 
   return (
-    <section id="skills" className="max-w-7xl mx-auto px-6 py-12 sm:py-16 border-t border-purple-900/25 bg-[#0c0717]/40 scroll-mt-20">
-      <motion.div 
-        initial={{ opacity: 0, y: 25 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="text-center max-w-xl mx-auto mb-14"
-      >
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-500/10 text-violet-400 text-xs font-semibold uppercase tracking-wider font-mono mb-4">
-          <Layers className="w-3.5 h-3.5" />
-          TECHNOLOGY TOOLBOX
+    <section id="skills" className="py-12 sm:py-16 scroll-mt-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Top Header Section */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 text-left">
+          <div>
+            <h2 className="font-netflix text-4xl sm:text-5xl md:text-6xl uppercase tracking-wider text-white">
+              TECHNOLOGIES &{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFC928] via-[#FF9D00] to-[#E58500]">
+                SKILLS
+              </span>
+            </h2>
+          </div>
+
+          <p className="text-xs sm:text-sm max-w-md text-slate-400 leading-relaxed font-normal">
+            Specialized modern toolkit for building high-performance web applications, fast APIs, and responsive digital products.
+          </p>
         </div>
-        <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">Technical Capabilities</h2>
-        <p className="text-slate-400 text-sm">Detailed overview of core languages, systems, and deployment platforms categorized by domain.</p>
-      </motion.div>
 
-      <div className="space-y-12 max-w-6xl mx-auto pb-12">
-        {Object.entries(categorizedSkills).map(([category, items], cIdx) => (
-          <div key={category} className="space-y-4">
-            {/* Category Subheading */}
-            <h3 className="text-xs font-bold text-violet-400 font-mono tracking-widest uppercase border-b border-purple-900/40 pb-2">
-              // {category} Stack
-            </h3>
-            
-            {/* Skills Grid for this Category */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-              {items.map((item, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 15 }}
-                  whileInView={{ 
-                    opacity: 1, 
-                    y: [0, -8, 0] 
-                  }}
-                  viewport={{ once: true }}
-                  transition={{ 
-                    opacity: { duration: 0.4, delay: idx * 0.03 },
-                    y: {
-                      repeat: Infinity,
-                      duration: 4 + (idx % 3) * 0.5,
-                      ease: "easeInOut",
-                      delay: (idx % 6) * 0.1
-                    }
-                  }}
-                  whileHover={{ 
-                    scale: 1.03,
-                    borderColor: 'rgba(168, 85, 247, 0.5)',
-                    boxShadow: '0 0 18px rgba(168, 85, 247, 0.2)'
-                  }}
-                  onClick={() => setSelectedTech(item)}
-                  className="bg-[#130b24]/75 border border-purple-900/35 rounded-2xl p-4 flex flex-col items-center justify-center text-center gap-3 transition-all duration-300 relative overflow-hidden group shadow-lg shadow-purple-950/30 backdrop-blur-sm cursor-pointer"
-                >
-                  <div className="w-12 h-12 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-400 group-hover:scale-110 transition-transform duration-300">
-                    {renderIcon(item.iconName)}
-                  </div>
-                  
-                  <span className="font-bold font-mono text-xs text-white uppercase tracking-wide truncate max-w-full">
-                    {item.name}
-                  </span>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Technology Details Modal */}
-      <AnimatePresence>
-        {selectedTech && (
-          <div className="fixed inset-0 bg-[#090514]/90 z-50 flex items-center justify-center p-6 backdrop-blur-sm">
-            <motion.div 
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              className="w-full max-w-md rounded-3xl bg-[#130b24] border border-purple-900/50 p-6 md:p-8 relative shadow-2xl shadow-purple-950/70 overflow-hidden font-sans"
-            >
-              <div className="hud-scanner" />
-              <button 
-                onClick={() => setSelectedTech(null)}
-                className="absolute top-4 right-4 text-slate-400 hover:text-white font-mono font-bold text-sm bg-[#0c0717] border border-purple-900/50 px-2.5 py-1 rounded-xl"
+        {/* Category Filters Bar */}
+        <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 mb-10">
+          {categories.map((cat) => {
+            const isActive = activeCategory === cat;
+            return (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`px-4 sm:px-5 py-2 rounded-full text-xs font-mono font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+                  isActive
+                    ? 'bg-gradient-to-r from-[#FF9D00] to-[#FFC928] text-black shadow-md shadow-[#FF9D00]/25'
+                    : 'bg-white/5 border border-white/10 text-slate-300 hover:text-white hover:border-[#FF9D00]/50'
+                }`}
               >
-                [X] CLOSE
+                {cat}
               </button>
-              
-              <div className="flex items-center gap-2 text-violet-400 text-xs font-mono font-bold uppercase border-b border-purple-900/40 pb-3.5 mb-5">
-                <Layers className="w-4 h-4" />
-                <span>Technology Intel Log</span>
-              </div>
-              
-              <div className="flex flex-col items-center text-center space-y-4">
-                <div className="w-16 h-16 rounded-2xl bg-violet-500/10 border border-violet-500/25 flex items-center justify-center text-violet-400">
-                  {renderIcon(selectedTech.iconName)}
-                </div>
-                
-                <div>
-                  <span className="text-[9px] font-mono font-bold text-violet-400 px-2.5 py-0.5 rounded-full bg-violet-500/10 border border-violet-500/20 uppercase tracking-wider font-sans select-none">
-                    {selectedTech.category}
-                  </span>
-                  <h3 className="text-2xl font-bold text-white mt-2 font-mono uppercase tracking-tight">{selectedTech.name}</h3>
-                </div>
+            );
+          })}
+        </div>
 
-                <div className="w-full border-t border-purple-900/40 pt-4 text-left space-y-2">
-                  <span className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-wider block">Description & Core Use</span>
-                  <p className="text-slate-300 text-sm leading-relaxed font-sans">{selectedTech.desc}</p>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+        {/* Skills Cards Grid with Rich Hover Popups */}
+        <motion.div 
+          layout
+          className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-3 sm:gap-4 overflow-visible"
+        >
+          <AnimatePresence>
+            {filteredSkills.map((skill) => {
+              const isHovered = hoveredSkill?.name === skill.name;
+
+              return (
+                <motion.div
+                  key={skill.name}
+                  layout
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.25 }}
+                  whileHover={{ y: -4 }}
+                  onMouseEnter={() => setHoveredSkill(skill)}
+                  onMouseLeave={() => setHoveredSkill(null)}
+                  className={`relative p-4 sm:p-5 rounded-2xl border transition-all duration-300 flex flex-col items-center justify-center text-center gap-3 cursor-pointer group ${
+                    isHovered ? 'z-50' : 'z-10'
+                  } ${
+                    darkMode
+                      ? 'bg-[#0D1B2D] border-[#1D334B] hover:border-[#FF9D00] shadow-lg shadow-black/40 hover:shadow-[0_8px_30px_rgba(255,157,0,0.25)]'
+                      : 'bg-white border-slate-200 hover:border-[#FF9D00] shadow-sm hover:shadow-md'
+                  }`}
+                >
+                  {/* Tech Icon Container */}
+                  <div className="w-12 h-12 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <TechIcon name={skill.name} className="w-9 h-9" />
+                  </div>
+
+                  {/* Technology Name */}
+                  <span className={`text-xs font-semibold tracking-tight truncate max-w-full ${
+                    darkMode ? 'text-slate-200 group-hover:text-white' : 'text-slate-700 group-hover:text-slate-900'
+                  }`}>
+                    {skill.name}
+                  </span>
+
+                  {/* ── RICH INTERACTIVE HOVER POPUP ── */}
+                  <AnimatePresence>
+                    {isHovered && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10, scale: 0.92 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 6, scale: 0.95 }}
+                        transition={{ duration: 0.18, ease: 'easeOut' }}
+                        className="absolute bottom-[calc(100%+14px)] left-1/2 -translate-x-1/2 z-[9999] w-64 sm:w-72 p-3.5 rounded-2xl bg-[#091322]/98 border-2 border-[#FF9D00] shadow-[0_20px_45px_rgba(0,0,0,0.95),0_0_30px_rgba(255,157,0,0.4)] backdrop-blur-2xl pointer-events-none text-left"
+                      >
+                        {/* Specular top highlight */}
+                        <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-[#FFC928] to-transparent pointer-events-none" />
+
+                        {/* Header: Icon, Name & Category */}
+                        <div className="flex items-center justify-between gap-2 mb-2 pb-2 border-b border-white/10">
+                          <div className="flex items-center gap-2">
+                            <div className="w-6 h-6 flex items-center justify-center shrink-0">
+                              <TechIcon name={skill.name} className="w-5 h-5" />
+                            </div>
+                            <span className="font-bold text-sm text-white tracking-wide">
+                              {skill.name}
+                            </span>
+                          </div>
+                          <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-[#FF9D00]/15 text-[#FF9D00] border border-[#FF9D00]/30 uppercase tracking-wider">
+                            {skill.category}
+                          </span>
+                        </div>
+
+                        {/* Detailed Information */}
+                        <p className="text-xs text-slate-300 leading-relaxed font-normal">
+                          {skill.desc}
+                        </p>
+
+                        {/* Arrow Pointer downward */}
+                        <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-[#091322] border-r-2 border-b-2 border-[#FF9D00] rotate-45" />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
+        </motion.div>
+
+      </div>
     </section>
   );
 }

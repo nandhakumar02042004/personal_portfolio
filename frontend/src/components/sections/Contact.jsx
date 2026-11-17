@@ -57,7 +57,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="max-w-7xl mx-auto px-6 py-12 sm:py-16 border-t border-purple-900/25 mb-6 scroll-mt-20">
+    <section id="contact" className="max-w-7xl mx-auto px-6 py-12 sm:py-16 border-t border-white/10 mb-6 scroll-mt-20">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
         
         {/* Left panel: Info */}
@@ -68,59 +68,59 @@ export default function Contact() {
           transition={{ duration: 0.6 }}
           className="lg:col-span-5 space-y-6"
         >
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-500/10 text-violet-400 text-xs font-semibold uppercase tracking-wider font-mono">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-white border border-white/20 text-xs font-semibold uppercase tracking-wider font-mono">
             <Mail className="w-3.5 h-3.5" />
             CONTACT PORTAL
           </div>
           <h2 className="text-3.5xl font-bold text-white leading-tight">
             Get In Touch
           </h2>
-          <p className="text-slate-400 leading-relaxed">
-            Let's discuss new projects, collaboration opportunities, or general queries. <span className="text-violet-400 block text-xs mt-1 font-mono">Direct inbox: nandhakumarksv@gmail.com</span>
+          <p className="text-zinc-400 leading-relaxed">
+            Let's discuss new projects, collaboration opportunities, or general queries. <span className="text-white block text-xs mt-1 font-mono">Direct inbox: nandhakumarksv@gmail.com</span>
           </p>
 
           <div className="space-y-4 pt-4">
-            <div className="flex items-center gap-4 bg-[#130b24]/75 border border-purple-900/30 p-4 rounded-2xl shadow-md shadow-purple-950/20 backdrop-blur-sm">
-              <div className="w-10 h-10 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-400">
+            <div className="flex items-center gap-4 bg-[#0f0f12]/80 border border-white/10 p-4 rounded-2xl shadow-md shadow-black/30 backdrop-blur-sm">
+              <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/15 flex items-center justify-center text-white">
                 <Mail className="w-5 h-5" />
               </div>
               <div className="font-mono">
-                <p className="text-[9px] text-slate-450 font-bold uppercase tracking-wider">EMAIL ADDRESS</p>
-                <span className="text-sm font-bold text-slate-200">nandhakumarksv@gmail.com</span>
+                <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider">EMAIL ADDRESS</p>
+                <span className="text-sm font-bold text-zinc-200">nandhakumarksv@gmail.com</span>
               </div>
             </div>
             
-            <div className="flex items-center gap-4 bg-[#130b24]/75 border border-purple-900/30 p-4 rounded-2xl shadow-md shadow-purple-950/20 backdrop-blur-sm">
-              <div className="w-10 h-10 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-400">
+            <div className="flex items-center gap-4 bg-[#0f0f12]/80 border border-white/10 p-4 rounded-2xl shadow-md shadow-black/30 backdrop-blur-sm">
+              <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/15 flex items-center justify-center text-white">
                 <GithubIcon className="w-5 h-5" />
               </div>
               <div className="font-mono">
-                <p className="text-[9px] text-slate-450 font-bold uppercase tracking-wider">GITHUB PROFILE</p>
-                <a href="https://github.com/nandhakumar02042004" target="_blank" rel="noreferrer" className="text-sm font-bold text-slate-200 hover:text-violet-400 transition-colors">
+                <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider">GITHUB PROFILE</p>
+                <a href="https://github.com/nandhakumar02042004" target="_blank" rel="noreferrer" className="text-sm font-bold text-zinc-200 hover:text-white transition-colors">
                   github.com/nandhakumar02042004
                 </a>
               </div>
             </div>
 
-            <div className="flex items-center gap-4 bg-[#130b24]/75 border border-purple-900/30 p-4 rounded-2xl shadow-md shadow-purple-950/20 backdrop-blur-sm">
-              <div className="w-10 h-10 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-400">
+            <div className="flex items-center gap-4 bg-[#0f0f12]/80 border border-white/10 p-4 rounded-2xl shadow-md shadow-black/30 backdrop-blur-sm">
+              <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/15 flex items-center justify-center text-white">
                 <LinkedinIcon className="w-5 h-5" />
               </div>
               <div className="font-mono">
-                <p className="text-[9px] text-slate-450 font-bold uppercase tracking-wider">LINKEDIN PROFILE</p>
-                <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="text-sm font-bold text-slate-200 hover:text-violet-400 transition-colors">
+                <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider">LINKEDIN PROFILE</p>
+                <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="text-sm font-bold text-zinc-200 hover:text-white transition-colors">
                   linkedin.com/in/nandhakumar
                 </a>
               </div>
             </div>
 
-            <div className="flex items-center gap-4 bg-[#130b24]/75 border border-purple-900/30 p-4 rounded-2xl shadow-md shadow-purple-950/20 backdrop-blur-sm">
-              <div className="w-10 h-10 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-400">
+            <div className="flex items-center gap-4 bg-[#0f0f12]/80 border border-white/10 p-4 rounded-2xl shadow-md shadow-black/30 backdrop-blur-sm">
+              <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/15 flex items-center justify-center text-white">
                 <MapPin className="w-5 h-5" />
               </div>
               <div className="font-mono">
-                <p className="text-[9px] text-slate-450 font-bold uppercase tracking-wider">LOCATION</p>
-                <span className="text-sm font-bold text-slate-200">Tamil Nadu, India</span>
+                <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider">LOCATION</p>
+                <span className="text-sm font-bold text-zinc-200">Tamil Nadu, India</span>
               </div>
             </div>
           </div>
@@ -134,7 +134,7 @@ export default function Contact() {
           transition={{ duration: 0.6 }}
           className="lg:col-span-7"
         >
-          <div className="bg-[#130b24]/75 border border-purple-900/30 p-8 md:p-10 rounded-3xl relative overflow-hidden shadow-lg shadow-purple-950/30 backdrop-blur-sm">
+          <div className="bg-[#0f0f12]/80 border border-white/10 p-8 md:p-10 rounded-3xl relative overflow-hidden shadow-lg shadow-black/40 backdrop-blur-sm">
             <div className="hud-scanner" />
             <AnimatePresence mode="wait">
               {!formSubmitted ? (
@@ -154,40 +154,40 @@ export default function Contact() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono">Your Name</label>
+                      <label className="text-xs font-semibold text-zinc-400 uppercase tracking-wider font-mono">Your Name</label>
                       <input 
                         type="text" 
                         name="name"
                         required
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full bg-[#0c0717] border border-purple-900/40 rounded-xl px-4 py-3.5 text-slate-200 text-sm focus:border-violet-500/60 outline-none transition-colors"
+                        className="w-full bg-black border border-white/15 rounded-xl px-4 py-3.5 text-white text-sm focus:border-white/60 focus:ring-1 focus:ring-white/20 outline-none transition-colors"
                         placeholder="Nandha"
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono">Email Address</label>
+                      <label className="text-xs font-semibold text-zinc-400 uppercase tracking-wider font-mono">Email Address</label>
                       <input 
                         type="email" 
                         name="email"
                         required
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full bg-[#0c0717] border border-purple-900/40 rounded-xl px-4 py-3.5 text-slate-200 text-sm focus:border-violet-500/60 outline-none transition-colors"
+                        className="w-full bg-black border border-white/15 rounded-xl px-4 py-3.5 text-white text-sm focus:border-white/60 focus:ring-1 focus:ring-white/20 outline-none transition-colors"
                         placeholder="nandhakumarksv@gmail.com"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono">Message Details</label>
+                    <label className="text-xs font-semibold text-zinc-400 uppercase tracking-wider font-mono">Message Details</label>
                     <textarea 
                       required
                       name="message"
                       rows="5"
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className="w-full bg-[#0c0717] border border-purple-900/40 rounded-xl px-4 py-3.5 text-slate-200 text-sm focus:border-violet-500/60 outline-none transition-colors resize-none"
+                      className="w-full bg-black border border-white/15 rounded-xl px-4 py-3.5 text-white text-sm focus:border-white/60 focus:ring-1 focus:ring-white/20 outline-none transition-colors resize-none"
                       placeholder="Write your message here..."
                     />
                   </div>
@@ -202,7 +202,7 @@ export default function Contact() {
                   <button 
                     type="submit"
                     disabled={loading}
-                    className="flex items-center justify-center gap-2.5 w-full py-4 bg-gradient-to-r from-violet-600 via-purple-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 disabled:opacity-70 text-white font-bold rounded-xl transition-all shadow-lg shadow-purple-900/30 active:scale-[0.99] cursor-pointer"
+                    className="flex items-center justify-center gap-2.5 w-full py-4 bg-white hover:bg-zinc-200 disabled:opacity-70 text-black font-bold rounded-xl transition-all shadow-lg shadow-white/10 active:scale-[0.99] cursor-pointer"
                   >
                     {loading ? (
                       <>
@@ -224,12 +224,12 @@ export default function Contact() {
                   exit={{ opacity: 0 }}
                   className="flex flex-col items-center justify-center py-12 text-center"
                 >
-                  <div className="w-16 h-16 rounded-full bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-400 mb-6 animate-bounce">
+                  <div className="w-16 h-16 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white mb-6 animate-bounce">
                     <CheckCircle2 className="w-8 h-8" />
                   </div>
                   <h3 className="text-2xl font-bold text-white mb-2 font-mono">MESSAGE TRANSMITTED!</h3>
-                  <p className="text-slate-400 max-w-sm text-xs leading-relaxed font-mono">
-                    Thank you, <span className="text-violet-400 font-bold">{formData.name}</span>. Your message has been sent directly to <span className="text-violet-400">nandhakumarksv@gmail.com</span>.
+                  <p className="text-zinc-400 max-w-sm text-xs leading-relaxed font-mono">
+                    Thank you, <span className="text-white font-bold">{formData.name}</span>. Your message has been sent directly to <span className="text-white">nandhakumarksv@gmail.com</span>.
                   </p>
                 </motion.div>
               )}

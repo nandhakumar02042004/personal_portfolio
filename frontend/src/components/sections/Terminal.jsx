@@ -78,9 +78,9 @@ export default function Terminal() {
       case 'experience':
         response = [
           'Career Timeline Milestones:',
-          '  2026 - Pres:  Web Application Developer, Kanavu Startup Village',
+          '  2026 - Pres:  Web Application Developer, Kanavu Startup Village (Erode)',
           '  Present:      Continuous Learning & Growth',
-          '  2025 - 2026:  Customer Support Associate, Firstsource Solutions',
+          '  2025 - 2026:  Customer Support Executive, Firstsource Solutions (Chennai)',
           '  2024 - 2025:  Python Full Stack Intern, Indra Institute'
         ];
         break;
@@ -175,10 +175,10 @@ export default function Terminal() {
               <div className="space-y-1">
                 <div className="flex justify-between font-bold text-slate-300">
                   <span>NODE ENCRYPTION</span>
-                  <span className="text-purple-400">SSL_AES_256</span>
+                  <span className="text-zinc-300">SSL_AES_256</span>
                 </div>
                 <div className="w-full bg-slate-950 h-1.5 rounded-full overflow-hidden border border-slate-850">
-                  <div className="bg-purple-500 h-full rounded-full w-[100%]" />
+                  <div className="bg-zinc-300 h-full rounded-full w-[100%]" />
                 </div>
               </div>
             </div>
